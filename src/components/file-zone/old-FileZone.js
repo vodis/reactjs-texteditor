@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Input from '../input/Input';
 import './FileZone.css';
 
 class FileZone extends Component {
@@ -42,10 +43,22 @@ class FileZone extends Component {
 
     }
 
-    handleDoubleClick = (event) => {
-        event.persist();
-        const targetElement = event.target;
-        targetElement.style.fontWeight = 'bold';
+    handleDoubleClick = () => {
+        document.onselectionchange = () => {
+            let {anchorNode, anchorOffset, focusNode, focusOffset} = document.getSelection();
+            console.log(`${anchorNode && anchorNode.data}:${anchorOffset}`);
+            console.log(`${focusNode && focusNode.data}:${focusOffset}`);
+        }
+    }
+    
+    handleMouseMoveCapture = () => {
+        document.onselectionchange = () => {
+            let {anchorNode, anchorOffset, focusNode, focusOffset} = document.getSelection();
+            if (anchorNode !== undefined) {
+                console.log(`${anchorNode && anchorNode.data}:${anchorOffset}`);
+                console.log(`${focusNode && focusNode.data}:${focusOffset}`);
+            }
+        }
     }
     
     handleBlur = ({ target }) => {
@@ -85,7 +98,10 @@ class FileZone extends Component {
                     onClick={this.handleAppendInput}
                     onBlur={this.handleBlur}
                     onDoubleClick={this.handleDoubleClick}
+                    onMouseMoveCapture={this.handleMouseMoveCapture}
                 >
+                <p>I can <span>solve</span> this task!</p>
+                <Input />
                 </div>
                 {isOpen && this.renderPopup()}
             </div>

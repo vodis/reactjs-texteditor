@@ -20,7 +20,11 @@
 
 #dummy-input {
     border: 0;
-    padding: 0 10px;
+    font-size: 14px;
+}
+
+#dummy-input.w-100 {
+    width: 100%;
 }
 
 .popup {
