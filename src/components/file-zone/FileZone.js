@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './FileZone.css';
 
 class FileZone extends Component {
-    handleAppendInput = (event) => {
+    handleAppendInput = async (event) => {
+        console.log(">>>>>>>>>change<<<<<<<")
         event.persist();
         const saveOuterHtml = event.target.outerHTML;
         const saveInnerText = event.target.innerText;
@@ -15,12 +16,10 @@ class FileZone extends Component {
         // input.focus();
         // event.target.innerText = "";
 
-        document.onselectionchange = () => {
-            let {anchorNode, anchorOffset, focusNode, focusOffset} = document.getSelection();
-            console.log(`${anchorNode && anchorNode.data}:${anchorOffset}`);
-            console.log(`${focusNode && focusNode.data}:${focusOffset}`);
-            console.log(saveOuterHtml)
-        }
+        let {anchorNode, anchorOffset, focusNode, focusOffset} = document.getSelection();
+        console.log(`${anchorNode && anchorNode.data}:${anchorOffset}`);
+        console.log(`${focusNode && focusNode.data}:${focusOffset}`);
+        console.log(saveOuterHtml);
     }
 
     render() {
@@ -28,7 +27,7 @@ class FileZone extends Component {
             <div id="file-zone">
                 <div 
                     id="file"
-                    onClick={this.handleAppendInput}
+                    onMouseUpCapture={this.handleAppendInput}
                 >
                     <p>I can <strong>solve</strong> this task! <i>Some Italic text.</i></p>
                     <p>Underline <u>@your idea</u></p>
