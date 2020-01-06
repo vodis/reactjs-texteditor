@@ -1,25 +1,38 @@
 import React, { Component } from 'react';
+import { setStart, captureSelection } from '../../selectors/line-selector';
+
 import './FileZone.css';
 
 class FileZone extends Component {
-    handleAppendInput = async (event) => {
-        console.log(">>>>>>>>>change<<<<<<<")
-        event.persist();
-        const saveOuterHtml = event.target.outerHTML;
-        const saveInnerText = event.target.innerText;
-        const input = document.createElement("input");
-        input.type = ("text");
-        input.id = 'dummy-input';
-        input.className = event.target.nodeName === 'P' && 'w-100';
-        input.value = saveInnerText;
-        // event.target.insertAdjacentElement('beforebegin', input);
-        // input.focus();
-        // event.target.innerText = "";
 
-        let {anchorNode, anchorOffset, focusNode, focusOffset} = document.getSelection();
-        console.log(`${anchorNode && anchorNode.data}:${anchorOffset}`);
-        console.log(`${focusNode && focusNode.data}:${focusOffset}`);
-        console.log(saveOuterHtml);
+    handleClick = (e) => {
+        e.persist();
+        let { innerText } = e.target;
+        let { node, offset } = setStart();
+        console.log(node, offset);
+        console.log(innerText)
+    }
+
+    handleAppendInput = async (event) => {
+        event.persist();
+        let { innerHTML } = event.target.parentElement;
+        
+        // let targetInnerHTML = event.target.innerHTML;
+        // const input = document.createElement("input");
+        // input.type = ("text");
+        // input.id = 'dummy-input';
+        // input.className = target.nodeName === 'P' && 'w-100';
+        // input.value = saveInnerText;
+        // target.insertAdjacentElement('beforebegin', input);
+        // input.focus();
+        // target.innerText = "";
+        
+        
+        let { mutatedOuterHtml } = captureSelection(innerHTML);
+        
+        if (!!mutatedOuterHtml) {
+            event.target.parentElement.innerHTML = mutatedOuterHtml;
+        }
     }
 
     render() {
@@ -27,10 +40,12 @@ class FileZone extends Component {
             <div id="file-zone">
                 <div 
                     id="file"
+                    onClick={this.handleClick}
                     onMouseUpCapture={this.handleAppendInput}
+                    // onClick={this.handleClick}
                 >
-                    <p>I can <strong>solve</strong> this task! <i>Some Italic text.</i></p>
-                    <p>Underline <u>@your idea</u></p>
+                    <p>I can <strong>solve <input type="text" value="input" onChange={() => {}}/> <span>link</span></strong> this task! <i>Some Italic text.</i></p>
+                    <p>Underline <u>@your idea</u> Ather <u>text</u> example</p>
                 </div>
             </div>
         );
