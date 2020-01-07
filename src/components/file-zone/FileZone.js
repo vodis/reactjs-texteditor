@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import { setStart, captureSelection } from '../../selectors/line-selector';
+import Input from '../input/Input';
 
 import './FileZone.css';
 
 class FileZone extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            inputValue: '',
+            isActive: false,
+        }
+    }
 
     handleClick = (e) => {
         e.persist();
@@ -13,39 +21,37 @@ class FileZone extends Component {
         console.log(innerText)
     }
 
-    handleAppendInput = async (event) => {
+    handleAppendInput = (event) => {
         event.persist();
         let { innerHTML } = event.target.parentElement;
-        
-        // let targetInnerHTML = event.target.innerHTML;
-        // const input = document.createElement("input");
-        // input.type = ("text");
-        // input.id = 'dummy-input';
-        // input.className = target.nodeName === 'P' && 'w-100';
-        // input.value = saveInnerText;
-        // target.insertAdjacentElement('beforebegin', input);
-        // input.focus();
-        // target.innerText = "";
-        
-        
-        let { mutatedOuterHtml } = captureSelection(innerHTML);
+        let { extractedValue, findAllTags, mutatedOuterHtml } = captureSelection(innerHTML);
         
         if (!!mutatedOuterHtml) {
             event.target.parentElement.innerHTML = mutatedOuterHtml;
+            this.setState({ isActive: true, inputValue: extractedValue, findAllTags, clientX: event.clientX, clientY: event.clientY });
         }
     }
 
     render() {
+        const { inputValue, isActive, clientY, clientX } = this.state;
+
         return (
             <div id="file-zone">
                 <div 
                     id="file"
                     onClick={this.handleClick}
                     onMouseUpCapture={this.handleAppendInput}
-                    // onClick={this.handleClick}
                 >
-                    <p>I can <strong>solve <input type="text" value="input" onChange={() => {}}/> <span>link</span></strong> this task! <i>Some Italic text.</i></p>
+                    <p>I can <strong>solve</strong> this task! <i>Some Italic text.</i> Have <strong>a good </strong>day!</p>
                     <p>Underline <u>@your idea</u> Ather <u>text</u> example</p>
+                    { isActive 
+                        && <Input 
+                                top= {clientY}
+                                left={clientX}
+                                value={inputValue} 
+                                inputChange={this.handleChange}
+                            />
+                    }
                 </div>
             </div>
         );

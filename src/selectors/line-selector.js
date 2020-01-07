@@ -1,6 +1,3 @@
-import React from 'react';
-
-
 export const setStart = () => {
     const { anchorNode, anchorOffset } = document.getSelection();
     return {
@@ -20,29 +17,26 @@ export const captureSelection = (innerHtml) => {
     const indexFocusNode = innerHtml.indexOf(focusNode.data) + focusOffset;
     const isDirectedForward = indexAnchorNode < indexFocusNode;
 
-    let extractedTag = <u></u>;
     let extractedValue = isDirectedForward 
         ? innerHtml.slice(indexAnchorNode, indexFocusNode)
         : innerHtml.slice(indexFocusNode, indexAnchorNode);
-    
-    let { findClosedTagU } = findClosedTagNull(extractedValue);
-    let mutatedOuterHtml = innerHtml.split(extractedValue)[0] + findClosedTagU + innerHtml.split(extractedValue)[1];
+
+    let { findAllTags } = findClosedTagNull(extractedValue);
+    let mutatedOuterHtml = innerHtml.split(extractedValue)[0] + findAllTags + innerHtml.split(extractedValue)[1];
 
     return {
-        extractedTag,
         extractedValue,
+        findAllTags,
         mutatedOuterHtml,
     }
 }
 
 function findClosedTagNull(value) {
-    let { u } = {
-        u: /<u>/gi,
+    let { all } = {
+        all: /<u>|<\/u>|<strong>|<\/strong>|<i>|<\/i>|<p>|<\/p>/gi,
     };
-
-    let findClosedTagU = value.match(u) && value.lenght % 2 !== 0 && ('' || '<u>');
-
+    let findAllTags = value.match(all) ? value.match(all).join('') : '';
     return {
-        findClosedTagU
+        findAllTags,
     }
 }
