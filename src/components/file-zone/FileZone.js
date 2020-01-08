@@ -35,10 +35,13 @@ class FileZone extends Component {
     }
 
     renderHtmlInput = (value) => {
-        return ReactDOMServer.renderToStaticMarkup(
+        return ReactDOMServer.renderToString(
             <Input value={value} />
         );
     }
+
+
+    
 
     render() {
         return (
