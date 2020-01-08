@@ -21,13 +21,15 @@ export const captureSelection = (innerHtml) => {
         ? innerHtml.slice(indexAnchorNode, indexFocusNode)
         : innerHtml.slice(indexFocusNode, indexAnchorNode);
 
-    let { findAllTags } = findClosedTagNull(extractedValue);
-    let mutatedOuterHtml = innerHtml.split(extractedValue)[0] + findAllTags + innerHtml.split(extractedValue)[1];
+    const { findAllTags } = findClosedTagNull(extractedValue);
+    const outerHtmlLeft = innerHtml.split(extractedValue)[0];
+    const outerHtmlRight = innerHtml.split(extractedValue)[1];
 
     return {
-        extractedValue,
         findAllTags,
-        mutatedOuterHtml,
+        outerHtmlLeft,
+        outerHtmlRight,
+        extractedValue,
     }
 }
 

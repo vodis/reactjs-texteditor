@@ -11,17 +11,12 @@ class Input extends React.Component {
     }
     
     render() {
-        const { value, inputChange, top, left } = this.props;
-        const style = {
-            position: 'fixed',
-            top: `${top}px`,
-            left: `${left}px`,
-        };
+        const { value } = this.props;
+        console.log(value)
 
         return (
             <input 
-                style={style} 
-                onChange={e => inputChange(e)}
+                onChange={e => console.log(e)}
                 ref={this.inputRef}
                 value={value} 
                 type="text" 
