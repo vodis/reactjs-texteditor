@@ -1,59 +1,33 @@
 import React, { Component } from 'react';
-import ReactDOMServer from 'react-dom/server';
-import { setStart, captureSelection } from '../../selectors/line-selector';
-import Input from '../input/Input';
 
 import './FileZone.css';
 
 class FileZone extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            inputValue: '',
-            isActive: false,
-        }
+    state = {
+        editable: false
     }
 
     handleClick = (e) => {
         e.persist();
-        let { innerText } = e.target;
-        let { node, offset } = setStart();
-        console.log(node, offset);
-        console.log(innerText)
-    }
+        const { id, tagName } = e.target;
 
-    handleMouseUpCapture = (event) => {
-        event.persist();
-        let { innerHTML } = event.target.parentElement;
-        let { extractedValue, outerHtmlLeft, findAllTags, outerHtmlRight } = captureSelection(innerHTML);
-
-        if ( !extractedValue ) {
-            return null;
+        if ( id === 'file-zone') {
+            return this.setState({ editable: false, })
+        } else {
+            this.setState({ editable: true, })
         }
-        
-        event.target.parentElement.innerHTML = outerHtmlLeft + findAllTags + this.renderHtmlInput(extractedValue) + outerHtmlRight;
-    }
 
-    renderHtmlInput = (value) => {
-        return ReactDOMServer.renderToString(
-            <Input value={value} />
-        );
+        console.log(e);
     }
-
 
     
 
     render() {
+        const { editable } = this.state;
+
         return (
-            <div id="file-zone">
-                <div 
-                    id="file"
-                    // onClick={this.handleClick}
-                    onMouseUpCapture={this.handleMouseUpCapture}
-                >
-                    <p>I can <strong>solve</strong> this task! <i>Some Italic text.</i> Have <strong>a good </strong>day!</p>
-                    <p>Underline <u>@your idea</u> Ather <u>text</u> example</p>
-                </div>
+            <div id="file-zone" onClick={this.handleClick}>
+                <div id="file" contentEditable={editable}></div>
             </div>
         );
     }

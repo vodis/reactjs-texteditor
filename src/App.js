@@ -2,14 +2,24 @@ import React, {Component} from 'react';
 import './App.css';
 import ControlPanel from "./components/control-panel/ControlPanel";
 import FileZone from "./components/file-zone/FileZone";
-import getMockText from './text.service';
+
+import { ThemeContext } from './context/theme-context';
 
 class App extends Component {
-    getText() {
-        getMockText().then(function (result) {
-            console.log(result);
-        });
+    constructor(props) {
+        super(props);
+        this.toggleButton = () => {
+            this.setState( state => ({
+                button: state.activeButtons
+            }));
+        };
+
+        this.state = {
+            button: [],
+            toggleButton: this.toggleButton,
+        }
     }
+
     render() {
         return (
             <div className="App">
@@ -17,8 +27,10 @@ class App extends Component {
                     <span>Simple Text Editor</span>
                 </header>
                 <main>
-                    <ControlPanel/>
-                    <FileZone/>
+                    <ThemeContext.Provider value={{color: "red"}}>
+                        <ControlPanel/>
+                        <FileZone/>
+                    </ThemeContext.Provider>
                 </main>
             </div>
         );
