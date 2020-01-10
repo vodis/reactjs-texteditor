@@ -3,31 +3,33 @@ import './App.css';
 import ControlPanel from "./components/control-panel/ControlPanel";
 import FileZone from "./components/file-zone/FileZone";
 
-import { ThemeContext } from './context/theme-context';
+import { ThemeContext, themes } from './context/theme-context';
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.toggleButton = () => {
-            this.setState( state => ({
-                button: state.activeButtons
+        this.setUpActiveButton = (setOfButtons) => {
+            this.setState( () => ({
+                setOfButtons,
             }));
         };
 
         this.state = {
-            button: [],
-            toggleButton: this.toggleButton,
+            innerText: themes.innerText,
+            setOfButtons: themes.setOfButtons,
+            toggleButton: this.setUpActiveButton,
         }
     }
 
     render() {
+        console.log(this.state)
         return (
             <div className="App">
                 <header>
                     <span>Simple Text Editor</span>
                 </header>
                 <main>
-                    <ThemeContext.Provider value={{color: "red"}}>
+                    <ThemeContext.Provider value={this.state}>
                         <ControlPanel/>
                         <FileZone/>
                     </ThemeContext.Provider>

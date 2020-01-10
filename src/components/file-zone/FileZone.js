@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
-import { setStart } from '../../selectors/line-selector';
+import { ThemeContext } from '../../context/theme-context';
 
 import './FileZone.css';
 
 class FileZone extends Component {
+
+    static contextType = ThemeContext;
+
     state = {
         editable: false,
         activeButtons: [],
         innerText: null,
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.activeButtons !== this.state.activeButtons) {
+            this.context.toggleButton(this.state.activeButtons)
+        }
     }
 
     handleClick = (e) => {
@@ -22,7 +31,7 @@ class FileZone extends Component {
 
         this.setState({ innerText });
         if (innerText !== this.state.innerText) {
-            this.setState({ activeButtons: [] })
+            this.setState({ activeButtons: [] });
         }
 
         this.makeRecursion([e.target][0]);
@@ -48,7 +57,7 @@ class FileZone extends Component {
 
         return (
             <div id="file-zone" onClick={(e) => this.handleClick(e)}>
-                <div id="file" contentEditable={editable}>При написании <u>скриптов</u> зачастую</div>
+                <div id="file" contentEditable={editable}>We are currently passing a hard-coded.</div>
             </div>
         );
     }

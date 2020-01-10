@@ -8,9 +8,9 @@ class ControlPanel extends Component {
         return (
             <div id="control-panel">
                 <div id="format-actions">
-                    <Button model="bold"><b>B</b></Button>
-                    <Button model="italic"><i>I</i></Button>
-                    <Button model="underline"><u>U</u></Button>
+                    <Button model="bold" type="B"><b>B</b></Button>
+                    <Button model="italic" type="I"><i>I</i></Button>
+                    <Button model="underline" type="U"><u>U</u></Button>
                 </div>
             </div>
         );

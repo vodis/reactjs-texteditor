@@ -1,6 +1,9 @@
 import React from 'react';
 
+export const themes = {
+    setOfButtons: [],
+}
+
 export const ThemeContext = React.createContext({
-    activeButtons: [],
-    toggleButton: () => {},
+    activeButtons: themes.setOfButtons,
 });

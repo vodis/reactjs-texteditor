@@ -2,27 +2,27 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { ThemeContext } from '../../context/theme-context';
 
+import './Button.css';
+
 class Button extends Component {
 
+    static contextType = ThemeContext;
+
     handleClick = () => {
-        document.execCommand(this.props.model)
+        document.execCommand(this.props.model);
     }
     
     render() {
-        const { children } = this.props;
-
+        const { children, type } = this.props;
+        const { setOfButtons } = this.context;
         return (
-            <ThemeContext.Consumer>
-                {({ activeButtons }) => (
-                    <button 
-                        onClick={this.handleClick.bind(this)}
-                        className={classNames("format-action", {"active": activeButtons && activeButtons.find(i => i === 'b')})} 
-                        type="button"
-                    >
-                        {children}
-                    </button>
-                )}
-            </ThemeContext.Consumer>
+            <button 
+                onClick={this.handleClick.bind(this)}
+                className={classNames("format-action", { "active": setOfButtons && setOfButtons.find(t => t === type) })} 
+                type="button"
+            >
+                {children}
+            </button>
         )
     }
 }
