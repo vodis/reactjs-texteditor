@@ -9,20 +9,28 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.setUpActiveButton = (setOfButtons) => {
-            this.setState( () => ({
+            this.setState(() => ({
                 setOfButtons,
             }));
         };
+        this.setRef = (ref) => {
+            this.setState({ setForwardRef: ref });
+        };
+        this.setOfRenge = (text) => {
+            this.setState({ setOfRangeText: text });
+        }
 
         this.state = {
-            innerText: themes.innerText,
+            setForwardRef: themes.setForwardRef,
             setOfButtons: themes.setOfButtons,
+            setOfRangeText: themes.setOfRangeText,
             toggleButton: this.setUpActiveButton,
+            toggleRef: this.setRef,
+            toggleRangeText: this.setOfRenge,
         }
     }
 
     render() {
-        console.log(this.state)
         return (
             <div className="App">
                 <header>

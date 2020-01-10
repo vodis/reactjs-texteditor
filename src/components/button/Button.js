@@ -8,13 +8,15 @@ class Button extends Component {
 
     static contextType = ThemeContext;
 
-    handleClick = () => {
+    handleClick = (e) => {
+        e.persist();
         document.execCommand(this.props.model);
     }
     
     render() {
         const { children, type } = this.props;
-        const { setOfButtons } = this.context;
+        const { setOfButtons, setOfRangeText } = this.context;
+        console.log(setOfRangeText)
         return (
             <button 
                 onClick={this.handleClick.bind(this)}

@@ -6,6 +6,14 @@ export const setStart = () => {
     }
 }
 
+export const getRange = () => {
+    const range = document.createRange();
+    // let text = range.startContainer.innerText;
+    console.log(this)
+    console.log(range.focusNode)
+    console.log(range, range.startContainer.activeElement)
+}
+
 export const captureSelection = (innerHtml) => {
     const {anchorNode, anchorOffset, focusNode, focusOffset} = document.getSelection();
 

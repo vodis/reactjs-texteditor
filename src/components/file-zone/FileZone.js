@@ -4,34 +4,36 @@ import { ThemeContext } from '../../context/theme-context';
 import './FileZone.css';
 
 class FileZone extends Component {
+    constructor(props) {
+        super(props);
+        this.ref = React.createRef();
+    }
 
     static contextType = ThemeContext;
 
     state = {
-        editable: false,
         activeButtons: [],
         innerText: null,
     }
 
+    componentDidMount() {
+        this.context.toggleRef(this.ref.current);
+    }
+
     componentDidUpdate(prevProps, prevState) {
         if (prevState.activeButtons !== this.state.activeButtons) {
-            this.context.toggleButton(this.state.activeButtons)
+            this.context.toggleButton(this.state.activeButtons);
         }
     }
 
     handleClick = (e) => {
         e.persist();
-        const { id, innerText } = e.target;
-
-        if ( id === 'file-zone') {
-            return this.setState({ editable: false, })
-        } else {
-            this.setState({ editable: true, })
-        }
+        const { innerText } = e.target;
 
         this.setState({ innerText });
         if (innerText !== this.state.innerText) {
             this.setState({ activeButtons: [] });
+            this.context.toggleRangeText(this.state.innerText);
         }
 
         this.makeRecursion([e.target][0]);
@@ -53,11 +55,9 @@ class FileZone extends Component {
     
 
     render() {
-        const { editable } = this.state;
-
         return (
             <div id="file-zone" onClick={(e) => this.handleClick(e)}>
-                <div id="file" contentEditable={editable}>We are currently passing a hard-coded.</div>
+                <div id="file" contentEditable={true} ref={this.ref}>We are currently passing a hard-coded.</div>
             </div>
         );
     }
