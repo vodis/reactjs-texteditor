@@ -26,6 +26,14 @@ class FileZone extends Component {
         }
     }
 
+    handleClickContainer = (e) => {
+        e.persist();
+        if (e.target.id === 'file-zone') {
+            this.context.toggleRangeText('');
+            this.context.toggleButton([]);
+        }
+    }
+
     handleClick = (e) => {
         e.persist();
         const { innerText } = e.target;
@@ -33,10 +41,13 @@ class FileZone extends Component {
         this.setState({ innerText });
         if (innerText !== this.state.innerText) {
             this.setState({ activeButtons: [] });
-            this.context.toggleRangeText(this.state.innerText);
         }
 
         this.makeRecursion([e.target][0]);
+    }
+
+    handleMouseDownCapture = (e) => {
+        this.context.toggleRangeText(e.target.innerHTML);
     }
 
     makeRecursion = (node) => {
@@ -56,8 +67,16 @@ class FileZone extends Component {
 
     render() {
         return (
-            <div id="file-zone" onClick={(e) => this.handleClick(e)}>
-                <div id="file" contentEditable={true} ref={this.ref}>We are currently passing a hard-coded.</div>
+            <div id="file-zone" onClick={(e) => this.handleClickContainer(e)}>
+                <div 
+                    onClick={(e) => this.handleClick(e)} 
+                    onMouseDownCapture={(e) => this.handleMouseDownCapture(e)}
+                    id="file" 
+                    contentEditable={true} 
+                    ref={this.ref}
+                    >
+                        We are currently passing a hard-coded.
+                </div>
             </div>
         );
     }

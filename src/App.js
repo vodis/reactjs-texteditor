@@ -6,11 +6,14 @@ import FileZone from "./components/file-zone/FileZone";
 import { ThemeContext, themes } from './context/theme-context';
 
 class App extends Component {
+
+    static contextType = ThemeContext;
+
     constructor(props) {
         super(props);
-        this.setUpActiveButton = (setOfButtons) => {
-            this.setState(() => ({
-                setOfButtons,
+        this.setUpActiveButton = (setOfButtons, set = undefined) => {
+            this.setState((state) => ({
+                setOfButtons: !set ? setOfButtons : state.setOfButtons.concat(setOfButtons),
             }));
         };
         this.setRef = (ref) => {
@@ -30,10 +33,14 @@ class App extends Component {
         }
     }
 
+    handleClick = (e) => {
+        this.setState({ setOfRangeText: '', setOfButtons: [] });
+    }
+
     render() {
         return (
             <div className="App">
-                <header>
+                <header onClick={this.handleClick}>
                     <span>Simple Text Editor</span>
                 </header>
                 <main>

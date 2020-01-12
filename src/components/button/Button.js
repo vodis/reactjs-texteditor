@@ -11,16 +11,24 @@ class Button extends Component {
     handleClick = (e) => {
         e.persist();
         document.execCommand(this.props.model);
+        this.context.toggleRangeText('');
+        if (this.context.setOfRangeText.length || this.context.setOfButtons.length) {
+            this.context.toggleButton([this.props.type], true);
+        }
     }
     
     render() {
         const { children, type } = this.props;
-        const { setOfButtons, setOfRangeText } = this.context;
-        console.log(setOfRangeText)
+        const { setOfButtons } = this.context;
+
+        const buttonIsFiredUp = classNames(
+            "format-action",
+            {"active":  setOfButtons && setOfButtons.find(t => t === type)}
+        );
         return (
             <button 
-                onClick={this.handleClick.bind(this)}
-                className={classNames("format-action", { "active": setOfButtons && setOfButtons.find(t => t === type) })} 
+                onClick={(e) => this.handleClick(e)}
+                className={buttonIsFiredUp} 
                 type="button"
             >
                 {children}
