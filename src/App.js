@@ -1,24 +1,58 @@
 import React, {Component} from 'react';
 import './App.css';
-import ControlPanel from "./control-panel/ControlPanel";
-import FileZone from "./file-zone/FileZone";
-import getMockText from './text.service';
+import ControlPanel from "./components/control-panel/ControlPanel";
+import FileZone from "./components/file-zone/FileZone";
+
+import { ThemeContext, themes } from './context/theme-context';
 
 class App extends Component {
-    getText() {
-        getMockText().then(function (result) {
-            console.log(result);
-        });
+
+    static contextType = ThemeContext;
+
+    constructor(props) {
+        super(props);
+        this.setUpActiveButton = (setOfButtons, set = undefined) => {
+            this.setState((state) => ({
+                setOfButtons: !set ? setOfButtons : state.setOfButtons.concat(setOfButtons),
+            }));
+        };
+        this.setRef = (ref) => {
+            this.setState({ setForwardRef: ref });
+        };
+        this.setOfRenge = (text) => {
+            this.setState({ setOfRangeText: text });
+        }
+        this.setOfReplaceText = (text) => {
+            this.setState({ replaceText: text});
+        }
+
+        this.state = {
+            setForwardRef: themes.setForwardRef,
+            setOfButtons: themes.setOfButtons,
+            setOfRangeText: themes.setOfRangeText,
+            replaceText: themes.replaceText,
+            toggleButton: this.setUpActiveButton,
+            toggleRef: this.setRef,
+            toggleRangeText: this.setOfRenge,
+            setOfReplaceText: this.setOfReplaceText,
+        }
     }
+
+    handleClick = (e) => {
+        this.setState({ setOfRangeText: '', setOfButtons: [] });
+    }
+
     render() {
         return (
             <div className="App">
-                <header>
+                <header onClick={this.handleClick}>
                     <span>Simple Text Editor</span>
                 </header>
                 <main>
-                    <ControlPanel/>
-                    <FileZone/>
+                    <ThemeContext.Provider value={this.state}>
+                        <ControlPanel/>
+                        <FileZone/>
+                    </ThemeContext.Provider>
                 </main>
             </div>
         );
