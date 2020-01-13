@@ -1,8 +1,13 @@
 export const setStart = () => {
     const { anchorNode, anchorOffset } = document.getSelection();
+
+    const range = document.createRange();
+    range.setStart(anchorNode, anchorOffset);
+
     return {
         node: anchorNode && anchorNode.data,
         offset: anchorOffset,
+        range,
     }
 }
 

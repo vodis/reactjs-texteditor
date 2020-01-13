@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment } from 'react'
 
-class TooltipList extends Component {
+class TooltipList extends React.PureComponent {
     state = {
-        isOpen: false,
+        word: '',
         synonyms: [],
     }
 
@@ -13,7 +13,8 @@ class TooltipList extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         if (nextProps.word !== this.state.word) {
-            this.fetchSynonyms(this.props.word);
+            this.fetchSynonyms(nextProps.word);
+            return true;
         }
     }
 
@@ -22,7 +23,6 @@ class TooltipList extends Component {
             const data = await fetch(`https://api.datamuse.com//words?ml=${value}`);
             const json = await data.json();
             this.setState(() => ({
-                isOpen: true,
                 word: value,
                 synonyms: json,
             }));
@@ -33,15 +33,9 @@ class TooltipList extends Component {
 
     renderPopup = () => {
         const { synonyms } = this.state;
-
-        if (synonyms.length) {
-            return null;
-        }
-        
-        synonyms.length = 10;
         return (
             <ol>
-                { synonyms.map((syn, i) => {
+                { synonyms.length && synonyms.slice(0, 10).map((syn, i) => {
                     return (
                         <li key={i}>{syn.word}</li>
                     )}) 
@@ -51,7 +45,6 @@ class TooltipList extends Component {
     }
 
     render() {
-    
         return (
             <Fragment>
                 {this.renderPopup()}

@@ -16,4 +16,5 @@
   flex-grow: 1;
   background-color: #fff;
   border: 1px solid #e4dede;
+  z-index: 0;
 }

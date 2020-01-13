@@ -42,7 +42,7 @@ class FileZone extends Component {
 
         this.setState({ innerText });
         if (innerText !== this.state.innerText) {
-            this.setState({ activeButtons: [], top: e.clientY + 15, left: e.clientX - 50, editedWord: '' });
+            this.setState({ activeButtons: [], editedWord: '' });
         }
 
         this.makeRecursion([e.target][0]);
@@ -55,11 +55,13 @@ class FileZone extends Component {
     handleKeyUp = (e) => {
         e.persist();
         let { innerText } = e.target;
-        const { offset } = setStart();
+        const { offset, range } = setStart();
         const start = this.findStartWord(innerText, offset);
         const end = this.findEndWord(innerText, offset);
         const editedWord = innerText.slice(start, end);
-        this.setState({ editedWord });
+        const top = range.startContainer.parentNode.offsetTop + 25;
+        const left = range.startContainer.parentNode.offsetLeft + 25;
+        this.setState({ editedWord, top, left });
     }
     
     findStartWord = (text, point) => {
@@ -101,7 +103,7 @@ class FileZone extends Component {
                     >
                         We are currently passing a hard-coded.
                 </div>
-                { editedWord.length > 0 && <Tooltip word={editedWord} top={top} left={left} /> }
+                { editedWord.length > 2 && <Tooltip word={editedWord} top={top} left={left} /> }
             </div>
         );
     }
