@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { ThemeContext } from '../context/theme-context'
+import { ThemeContext } from '../context/theme-context';
+import { captureSelection } from '../selectors/line-selector';
 
 class TooltipList extends React.PureComponent {
     static contextType = ThemeContext;
@@ -10,8 +11,14 @@ class TooltipList extends React.PureComponent {
     }
 
     componentDidMount() {
-        const { word } = this.props;
-        this.fetchSynonyms(word);
+        this.fetchSynonyms(this.props.word);
+        const { innerHTML } = this.context.setForwardRef;
+        const { outerHtmlLeft, outerHtmlRight } = captureSelection(innerHTML);
+        this.setState((state) => ({ 
+            ...state, 
+            outerHtmlLeft, 
+            outerHtmlRight 
+        }))
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -22,7 +29,8 @@ class TooltipList extends React.PureComponent {
     }
 
     handleClick = (e, word) => {
-        this.context.setOfReplaceText(word);
+        const { outerHtmlLeft, outerHtmlRight } = this.state;
+        this.context.setForwardRef.innerHTML = outerHtmlLeft + word + " " + outerHtmlRight;
     }
 
     fetchSynonyms = async (value) => {

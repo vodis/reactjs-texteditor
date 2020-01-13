@@ -31,6 +31,7 @@ export const captureSelection = (innerHtml) => {
     const outerHtmlRight = innerHtml.split(extractedValue)[1];
 
     return {
+        anchorNode,
         findAllTags,
         outerHtmlLeft,
         outerHtmlRight,
