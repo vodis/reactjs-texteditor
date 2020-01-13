@@ -1,6 +1,9 @@
-import React, { Fragment } from 'react'
+import React, { Fragment } from 'react';
+import { ThemeContext } from '../context/theme-context'
 
 class TooltipList extends React.PureComponent {
+    static contextType = ThemeContext;
+    
     state = {
         word: '',
         synonyms: [],
@@ -16,6 +19,10 @@ class TooltipList extends React.PureComponent {
             this.fetchSynonyms(nextProps.word);
             return true;
         }
+    }
+
+    handleClick = (e, word) => {
+        this.context.setOfReplaceText(word);
     }
 
     fetchSynonyms = async (value) => {
@@ -37,7 +44,7 @@ class TooltipList extends React.PureComponent {
             <ol>
                 { synonyms.length && synonyms.slice(0, 10).map((syn, i) => {
                     return (
-                        <li key={i}>{syn.word}</li>
+                        <li key={i} onClick={(e) => this.handleClick(e, syn.word)}>{syn.word}</li>
                     )}) 
                 }
             </ol>

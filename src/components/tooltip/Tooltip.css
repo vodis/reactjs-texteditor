@@ -16,4 +16,5 @@
 
 .tooltip ol > li {
   border-bottom: 1px dotted #cccccc;
+  cursor: pointer;
 }

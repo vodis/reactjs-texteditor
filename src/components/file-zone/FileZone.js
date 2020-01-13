@@ -26,6 +26,12 @@ class FileZone extends Component {
         if (prevState.activeButtons !== this.state.activeButtons) {
             this.context.toggleButton(this.state.activeButtons);
         }
+
+        if (this.context.replaceText.length) {
+            let { innerText } = prevState.range.startContainer.parentNode;
+            prevState.range.startContainer.parentNode.innerText = innerText.slice(0, prevState.start) + ' ' + this.context.replaceText + ' ' + innerText.slice(prevState.end);
+            this.context.setOfReplaceText("");
+        }
     }
 
     handleClickContainer = (e) => {
@@ -61,7 +67,7 @@ class FileZone extends Component {
         const editedWord = innerText.slice(start, end);
         const top = range.startContainer.parentNode.offsetTop + 25;
         const left = range.startContainer.parentNode.offsetLeft + 25;
-        this.setState({ editedWord, top, left });
+        this.setState({ editedWord, top, left, target: e.target, start, end, range });
     }
     
     findStartWord = (text, point) => {

@@ -22,14 +22,19 @@ class App extends Component {
         this.setOfRenge = (text) => {
             this.setState({ setOfRangeText: text });
         }
+        this.setOfReplaceText = (text) => {
+            this.setState({ replaceText: text});
+        }
 
         this.state = {
             setForwardRef: themes.setForwardRef,
             setOfButtons: themes.setOfButtons,
             setOfRangeText: themes.setOfRangeText,
+            replaceText: themes.replaceText,
             toggleButton: this.setUpActiveButton,
             toggleRef: this.setRef,
             toggleRangeText: this.setOfRenge,
+            setOfReplaceText: this.setOfReplaceText,
         }
     }
 
